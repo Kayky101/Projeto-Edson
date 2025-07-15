@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    const saldoFinalEl = document.getElementById('saldo-final');
+    const totalReceitasEl = document.getElementById('total-receitas');
+    const totalDespesasEl = document.getElementById('total-despesas');
     const listaTransacoesEl = document.getElementById('lista-transacoes');
     const form = document.getElementById('form-transacao');
     const inputDescricao = document.getElementById('descricao');
@@ -15,14 +18,26 @@ document.addEventListener('DOMContentLoaded', () => {
         item.innerHTML = `
             ${transacao.descricao}
             <span>${sinal} R$ ${Math.abs(transacao.valor).toFixed(2)}</span>
-            <button class="btn-delete">x</button>
+            <button class="btn-delete" onclick="removeTransacao(${transacao.id})">x</button>
         `;
         listaTransacoesEl.appendChild(item);
     }
     
+    function updateDashboard() {
+        const valores = transacoes.map(t => t.valor);
+        const total = valores.reduce((acc, item) => (acc += item), 0).toFixed(2);
+        const receitas = valores.filter(item => item > 0).reduce((acc, item) => (acc += item), 0).toFixed(2);
+        const despesas = (valores.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1).toFixed(2);
+        
+        saldoFinalEl.innerText = `R$ ${total}`;
+        totalReceitasEl.innerText = `+ R$ ${receitas}`;
+        totalDespesasEl.innerText = `- R$ ${despesas}`;
+    }
+
     function init() {
         listaTransacoesEl.innerHTML = '';
         transacoes.forEach(addTransactionDOM);
+        updateDashboard();
     }
 
     function addTransacao(e) {
@@ -40,6 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
         init();
         inputDescricao.value = '';
         inputValor.value = '';
+    }
+
+    window.removeTransacao = function(id) {
+        transacoes = transacoes.filter(t => t.id !== id);
+        init();
     }
 
     init();
