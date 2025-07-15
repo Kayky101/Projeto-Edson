@@ -8,7 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputDescricao = document.getElementById('descricao');
     const inputValor = document.getElementById('valor');
 
-    let transacoes = [];
+    const transacoesDoLocalStorage = JSON.parse(localStorage.getItem('transacoes'));
+    let transacoes = transacoesDoLocalStorage !== null ? transacoesDoLocalStorage : [];
+
+    function updateLocalStorage() {
+        localStorage.setItem('transacoes', JSON.stringify(transacoes));
+    }
 
     function addTransactionDOM(transacao) {
         const tipo = transacao.valor > 0 ? 'receita' : 'despesa';
@@ -52,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             valor: parseFloat(inputValor.value)
         };
         transacoes.push(transacao);
+        updateLocalStorage();
         init();
         inputDescricao.value = '';
         inputValor.value = '';
@@ -59,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.removeTransacao = function(id) {
         transacoes = transacoes.filter(t => t.id !== id);
+        updateLocalStorage();
         init();
     }
 

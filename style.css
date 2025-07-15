@@ -16,20 +16,20 @@ body {
     background-color: var(--cor-fundo);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Alinha no topo para desktop */
     min-height: 100vh;
     margin: 0;
-    padding: 20px 0; /* Adiciona padding vertical */
+    padding: 20px; 
 }
 
-/* Regra do container para MOBILE FIRST */
+/* Regra do container modificada para ser flexível */
 .container {
     background-color: var(--cor-container);
     box-shadow: 0 4px 15px var(--cor-sombra);
     border-radius: 10px;
     padding: 30px;
     width: 95%; 
-    max-width: 400px; /* Largura máxima para visualização mobile */
+    max-width: 1200px;
     margin: 20px auto;
 }
 
@@ -120,3 +120,27 @@ h2 { text-align: center; }
     transition: opacity 0.2s ease;
 }
 .lista-transacoes li:hover .btn-delete { opacity: 1; }
+
+
+/* --- ESTILOS PARA DESKTOP (TELA CHEIA) --- */
+@media (min-width: 768px) {
+    .main-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr; 
+        gap: 40px; 
+    }
+    .coluna-esquerda h3, .coluna-direita h3 {
+        margin-top: 0;
+    }
+    .lista-transacoes {
+        max-height: 500px;
+        overflow-y: auto;
+        padding-right: 10px; 
+    }
+    .dashboard {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .dashboard .card.saldo {
+        grid-column: auto;
+    }
+}
