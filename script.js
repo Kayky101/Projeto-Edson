@@ -11,23 +11,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const transacoesDoLocalStorage = JSON.parse(localStorage.getItem('transacoes'));
     let transacoes = transacoesDoLocalStorage !== null ? transacoesDoLocalStorage : [];
 
-    function updateLocalStorage() {
-        localStorage.setItem('transacoes', JSON.stringify(transacoes));
+    function removeTransacao(id) {
+        transacoes = transacoes.filter(t => t.id !== id);
+        updateLocalStorage();
+        init();
     }
 
     function addTransactionDOM(transacao) {
         const tipo = transacao.valor > 0 ? 'receita' : 'despesa';
         const sinal = transacao.valor > 0 ? '+' : '-';
+        
         const item = document.createElement('li');
         item.classList.add(tipo);
-        item.innerHTML = `
-            ${transacao.descricao}
-            <span>${sinal} R$ ${Math.abs(transacao.valor).toFixed(2)}</span>
-            <button class="btn-delete" onclick="removeTransacao(${transacao.id})">x</button>
-        `;
+
+        const infoDiv = document.createElement('div');
+        infoDiv.classList.add('transacao-info');
+        infoDiv.textContent = `${transacao.descricao} (${sinal} R$ ${Math.abs(transacao.valor).toFixed(2)})`;
+        
+        const btnDelete = document.createElement('button');
+        btnDelete.classList.add('btn-delete');
+        btnDelete.innerText = 'x';
+        btnDelete.addEventListener('click', () => removeTransacao(transacao.id));
+        
+        item.appendChild(infoDiv);
+        item.appendChild(btnDelete);
+        
         listaTransacoesEl.appendChild(item);
     }
-    
+
     function updateDashboard() {
         const valores = transacoes.map(t => t.valor);
         const total = valores.reduce((acc, item) => (acc += item), 0).toFixed(2);
@@ -63,10 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
         inputValor.value = '';
     }
 
-    window.removeTransacao = function(id) {
-        transacoes = transacoes.filter(t => t.id !== id);
-        updateLocalStorage();
-        init();
+    function updateLocalStorage() {
+        localStorage.setItem('transacoes', JSON.stringify(transacoes));
     }
 
     init();

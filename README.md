@@ -6,6 +6,7 @@ Este projeto, criado para a matéria de Desenvolvimento Web, trata-se de uma apl
 - Lançar Gastos e Ganhos: Adicione de forma fácil seus recebimentos (entradas positivas) e seus gastos (saídas negativas) usando um formulário intuitivo.
 - Visão Geral Instantânea: Acompanhe em um painel o seu saldo atual, o montante total de ganhos e o montante total de gastos, com atualização automática.
 - Registro Detalhado: Consulte todas as suas transações organizadas em um histórico prático e bem apresentado.
+- Remoção de Transações: Cada item no histórico possui um botão para remoção individual.
 - Dados Sempre Seguros: Usei o `localStorage` do seu navegador para guardar suas informações, assim você não perde nada ao fechar ou atualizar a página.
 - Funciona em Qualquer Tela: O visual se ajusta a qualquer dispositivo, seja no celular (priorizando a versão mobile) ou no computador.
 
